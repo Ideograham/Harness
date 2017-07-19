@@ -31,6 +31,6 @@ struct adjList
 
 struct graph
 {
-	int v;
+	int vertexCount;
 	adjList *array;
 };

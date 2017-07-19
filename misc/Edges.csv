@@ -1,0 +1,28 @@
+Length(mm),From,To,Notes
+35,P1,HV1,ECU1
+35,P2,HV1,ECU1
+100,P22,HV1,DIAG
+100,HV1,HV2,ECU to Rear of Head
+100,HV2,P4,Barometric Pressure
+100,HV2,FB1,Switched Power Fuses 3x10A
+100,HV2,HV3,Engine R
+100,HV2,HV4,Engine L
+100,HV3,P3,Customer Interface Connector
+100,HV3,N5,Fuel Pump Breakout
+100,N5,X5,APS
+100,N5,X6,VR ACT
+100,N5,X7,MPU
+100,N4,X8,Oil Pressure
+100,N4,X9,Coolant Temp
+100,N4,N6,Power Junction
+100,N6,N8,Alternator Breakout
+100,N8,X12,Battery Fuse
+100,X12,N7,Battery Leads
+100,N7,RT3,Battery - 
+100,N7,RT3,Battery+
+100,N8,RT1,Alt B (charge)
+100,N8,P14,Alt R/L (Field - Excite)
+500,N4,N9,Relay Breakout
+250,N9,N10,Starter Relay
+250,N9,N11,Glow Relay
+250,N9,N12,Shutdown Relay

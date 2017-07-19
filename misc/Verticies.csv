@@ -1,0 +1,28 @@
+Name,Description
+P1,ECU1
+P2,ECU2
+P22,Diagnostic Stub
+HV1,ECU Junction
+HV2,Rear of Head Junction
+HV3,Engine Right Junction
+HV4,Engine Left Junction
+P4,Barometric Pressure Sensor
+FB1,Switched Power Fuse Box
+P23,Fuel Cut Relay Connector
+P3,Customer Interface
+P8,Oil Pressure
+P9,Coolant Temperature
+HV5,Fuel System Junction
+HV6,Alternator Junction
+HV7,Relay Junction
+P5,Mag Pickup
+P6,Actuator Position 
+P7,VR_Actuator
+RT1,Alternator B+
+P14,Alternator R
+P24,Start Relay Connector
+P25,Glow Relay Connector
+FB2,Unswitched Power Fuse
+HV8,Battery Lead Junction
+RT2,Battery +
+RT3,Battery -
