@@ -30,12 +30,13 @@ addEdge(graph *Graph, int src, int dest, int weight)
 void
 printPath(int path[], int n, int src, int v)
 {
-	int stack[n];
+	//int stack[n];
+	int *stack = (int*)malloc(n * sizeof(int));
 	int sp = 0;
 	stack[sp++] = v;
 
 	printf("Path: ");
-	while (v <n )
+	while (v < n )
 	{
 		//printf("%d ", path[v]);
 		stack[sp++] = path[v];
@@ -47,6 +48,7 @@ printPath(int path[], int n, int src, int v)
 	{
 		printf("%d ", stack[--sp]);
 	}
+	free(stack);
 }
 
 
@@ -101,7 +103,7 @@ dijkstra(graph *Graph, int src)
 			int vertex = Crawl->dest;
 
 			if (
-				isInMinHeap(Heap, v) && 
+				isInMinHeap(Heap, vertex) && 
 				dist[u] != INT_MAX &&
 				Crawl->weight + dist[u] < dist[vertex])
 			{
