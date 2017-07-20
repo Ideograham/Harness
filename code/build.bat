@@ -13,4 +13,5 @@ pushd ..\..\build
 rem cl %CL_FLAGS% ..\code\harness.cpp /link %LINK_FLAGS% 
 
 cl %CL_FLAGS% ..\Harness\code\harness.cpp 
+cl %CL_FLAGS% ..\Harness\code\csv.cpp 
 popd

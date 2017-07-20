@@ -1,28 +1,27 @@
-Length(mm),From,To,Notes
-35,P1,HV1,ECU1
-35,P2,HV1,ECU1
-100,P22,HV1,DIAG
-100,HV1,HV2,ECU to Rear of Head
-100,HV2,P4,Barometric Pressure
-100,HV2,FB1,Switched Power Fuses 3x10A
-100,HV2,HV3,Engine R
-100,HV2,HV4,Engine L
-100,HV3,P3,Customer Interface Connector
-100,HV3,N5,Fuel Pump Breakout
-100,N5,X5,APS
-100,N5,X6,VR ACT
-100,N5,X7,MPU
-100,N4,X8,Oil Pressure
-100,N4,X9,Coolant Temp
-100,N4,N6,Power Junction
-100,N6,N8,Alternator Breakout
-100,N8,X12,Battery Fuse
-100,X12,N7,Battery Leads
-100,N7,RT3,Battery - 
-100,N7,RT3,Battery+
-100,N8,RT1,Alt B (charge)
-100,N8,P14,Alt R/L (Field - Excite)
-500,N4,N9,Relay Breakout
-250,N9,N10,Starter Relay
-250,N9,N11,Glow Relay
-250,N9,N12,Shutdown Relay
+E0	150	P1	HV1	ECU1
+E1	150	P2	HV1	ECU2
+E2	150	P22	HV1	DIAG
+E3	250	P23	HV1	Fuel Cut Relay
+E4	200	HV1	HV2	ECU to Rear of Head
+E5	500	HV2	HV3	Rear of Head to RHS
+E6	200	HV2	HV4	Rear of Head to LHS
+E7	325	P4	HV2	Barometric Pressure
+E8	300	FB1	HV2	Switched Power Fuses 3x10A
+E9	1000	P3	HV3	Customer Interface Connector
+E10	150	P8	HV4	Oil Pressure
+E11	100	HV5	HV3	Fuel Pump Breakout
+E12	300	HV6	HV4	Alternator Breakout
+E13	400	HV7	HV4	Relay Breakout
+E14	175	P5	HV5	MPU
+E15	50	P6	HV5	APS
+E16	50	P7	HV5	VR ACT
+E17	300	P9	HV6	Coolant Temp
+E18	150	RT1	HV6	ALT B CHARGE
+E19	250	P14	HV6	Alt R L 
+E20	100	P24	HV7	Starter Relay
+E21	225	P25	HV7	Glow Relay
+E22	500	HV6	HV8	Power Junction
+E23	150	FB2	HV8	Battery Fuse
+E24	800	HV9	HV8	Battery Leads
+E25	325	RT2	HV9	Battery Pos
+E26	325	RT3	HV9	Battery Neg
