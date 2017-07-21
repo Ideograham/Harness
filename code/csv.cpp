@@ -3,6 +3,15 @@
 #include "ig_tokenizer.cpp"
 
 
+struct vertex
+{
+	int Id;
+	//char Name[5];
+	//char Description[80];
+	token *NameTok;
+	token *DescriptionTok;
+};
+
 struct edge
 {
 	int Id;
@@ -11,15 +20,6 @@ struct edge
 	vertex *From;
 	vertex *To;
 	token *NotesTok;
-}
-
-struct vertex
-{
-	int Id;
-	//char Name[5];
-	//char Description[80];
-	token *NameTok;
-	token *DescriptionTok;
 };
 
 struct gr
@@ -32,7 +32,6 @@ struct gr
 	edge **Edges;
 };
 
-
 char*
 processCSVVerticies(gr *Graph, char *VertCSVPath)
 {
@@ -44,10 +43,9 @@ processCSVVerticies(gr *Graph, char *VertCSVPath)
 		tokenizer *T = (tokenizer*)malloc(sizeof(tokenizer));
 		T->At = verticies;
 
-		token *Tok = (token*)malloc(sizeof(token));
+		token *Tok = (token*)calloc(0, sizeof(token));
 		token *LineTok = (token*)malloc(sizeof(token));
 		*LineTok = GetToken(T); 
-		*Tok = {};
 		
 		// printf("Type: %s\nTok: %.*s\n", 
 		// 		token_strings[(int)Tok->Type], 
@@ -121,10 +119,10 @@ processCSVVerticies(gr *Graph, char *VertCSVPath)
 				}
 			}
 		}
+		free(T);
+		free(LineTok);
+		free(Tok);
 	}	
-	free(tokenizer);
-	free(lineTok);
-	free(Tok);
 	return verticies;
 }
 
@@ -141,17 +139,8 @@ processCSVEdges(gr *Graph, char *EdgeCSVPath)
 		token *Tok = (token*)malloc(sizeof(token));
 		token *PrevTok = (token*)malloc(sizeof(token));
 		*PrevTok = GetToken(T); 
-		*Tok = {};
 		
-		printf("Type: %s\nTok: %.*s\n", 
-			token_strings[(int)Tok->Type], 
-			Tok->TextLength, 
-			Tok->Text);
-
-		//process verticies	
 		int FoundField = 0;
-		char *SepPos[4] = {};
-		b32 FoundHeading = FALSE;
 
 		edge *E = NULL;
 		while((PrevTok->Type != Token_EndOfStream) && (Tok->Type != Token_EndOfStream))
@@ -159,75 +148,79 @@ processCSVEdges(gr *Graph, char *EdgeCSVPath)
 			if(!E)
 			{
 				//Allocate Temporary Edge to Store Fields
-				E = (edge*)malloc(sizeof(edge));
-				*E = {};
+				E = (edge*)calloc(0, sizeof(edge));
+				E->NameTok = (token*)malloc(sizeof(token));
 				E->NotesTok = (token*)malloc(sizeof(token));
 			}
-
 			*Tok = GetToken(T);
-			
-			// if(!FoundHeading)
-			// {
-			// 	//no validation - should add
-			// 	FoundHeading = TRUE;
-			// 	FoundField = 0;
-			// 	SepPos = {};  				
-			// 	*LineTok = GetToken(T);		//start next cycle
-			// }
 
+			
 			if (Tok->Type == Token_Comma)
 			{
 				switch(FoundField)
 				{
 					case 0:
 						{
-							if (PrevTok.Type == Token_Number)
-							{
-								E->
-							}
+							//Name
+							E->NameTok->Text = PrevTok->Text;
+							E->NameTok->TextLength = Tok->Text - 1 - PrevTok->Text;
+							*PrevTok = GetToken(T);	
+							
+							
 						} break;
-					
+
+					case 1:
+						{	//Len
+							if (PrevTok->Type == Token_Number)
+							{
+								E->Len = NumberTokenToInt(*PrevTok);
+							}
+							*PrevTok = GetToken(T);	
+
+						}break;
+
+					case 2:
+						{	//From
+							printf("Not gonna From\n");	
+							*PrevTok = GetToken(T);		
+
+						}break;
+
+					case 3:	
+						{	//To
+							printf("Not Gonna To\n");
+							*PrevTok = GetToken(T);	
+
+						}break;
+
+					case 4:
+						{	//Notes
+							E->NotesTok->Text = PrevTok->Text;	
+							E->NotesTok->TextLength = Tok->Text - 1 - PrevTok->Text;
+							*PrevTok = GetToken(T);	
+
+						}break;
+
 					default:
 						break;
 				}
-				else
-				{
-					printf("Error on this line, skipping edge.\n");
-				}
+				++FoundField;
 			}
 			
 			if (Tok->Type == Token_EndOfLine)
 			{
-				{
-					// if(!FoundHeading)
-					// {
-					// 	//no validation - should add
-					// 	FoundHeading = TRUE;
-					// 	FoundSep = FALSE;
-					// 	SepPos = NULL;				
-					// 	*LineTok = GetToken(T);		//start next cycle
-					// }
-					if(FoundSep)
-					{
+				//check if found field ==5;
 
-						//Fill Vertex
-						V->Id = Graph->VertexCount;
-
-						V->NameTok->Type = Token_Identifier;
-						V->NameTok->Text = LineTok->Text;
-						V->NameTok->TextLength = SepPos - LineTok->Text;
-
-						V->DescriptionTok->Type = Token_Identifier;
-						V->DescriptionTok->Text = SepPos + 1;
-						V->DescriptionTok->TextLength = Tok->Text + Tok->TextLength - SepPos - 2;	//Don't include newline or comma
-					}
-				}
+				//Add Edge To Graph
+				Graph->Edges[Graph->EdgeCount++] = E;
+				E = NULL;
+				FoundField = 0;			
+				*PrevTok = GetToken(T);		//start next cycle
 			}
 		}	
 	}
 	return edges;
 }
-
 
 int
 main(int argc, char **args)
@@ -242,7 +235,6 @@ main(int argc, char **args)
 	Graph->EdgeCapacity = 200;
 	Graph->Edges = (edge**)malloc(Graph->EdgeCapacity * sizeof(edge));
 	Graph->EdgeCount = 0;
-
 
 	char *verticies = processCSVVerticies(Graph, "Verticies.csv");
 	char *edges = processCSVEdges(Graph, "Edges.csv");
