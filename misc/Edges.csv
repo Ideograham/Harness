@@ -25,3 +25,14 @@ E23,150,FB2,HV8,Battery Fuse
 E24,800,HV9,HV8,Battery Leads
 E25,325,RT2,HV9,Battery Pos
 E26,325,RT3,HV9,Battery Neg
+E27,105,HV6,SP1,Alt Fused Power Splice
+E28,405,SP1,HV8,Alt Fused Power Splice
+E29,55,HV4,SP2,Fused Power Rear Splice
+E30,255,SP2,HV6,Fused Power Rear Splice
+E31,305,HV7,SP3,Fused Power Relay Splice
+E32,105,SP3,HV4,Fused Power Relay Splice
+E33,105,HV4,SP4,Ground Rear Splice
+E34,205,SP4,HV6,Ground Rear Splice
+E35,105,HV1,SP5,Ground ECU Splice 
+E36,105,SP5,HV2,Ground ECU Splice
+

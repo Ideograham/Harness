@@ -1,5 +1,6 @@
 #include "minHeap.cpp"
 #include "harness.h"
+#include "csv.cpp"
 
 graph*
 createGraph(int v)
@@ -115,14 +116,37 @@ dijkstra(graph *Graph, int src)
 			Crawl = Crawl->next;
 		}
 	}
-	printArr(dist, path, v, src);
+	printArr(dist, path, v, src);	
 }
 
 int
 main(int argc, char **args)
 {
-	int V = 9;
-	graph *Graph = createGraph(V);
+
+	gr *G = allocateGraph();
+
+	char *vertexCSV = processCSVVerticies(G, "Verticies.csv");
+	char *edgeCSV = processCSVEdges(G, "Edges.csv");
+	char *wireCSV = processCSVWires(G, "Wires.csv");
+
+	
+	graph *Graph = createGraph(G->VertexCount);
+	for (int i=0; i<G->EdgeCount; ++i)
+	{
+		edge *E = G->Edges[i];
+		addEdge(Graph, E->From->Id, E->To->Id, E->Len);
+	}
+
+	for (int i=0; i<G->WireCount; ++i)
+	{
+		wire *W = G->Wires[i];
+		printf("WIRE %.*s:\t\tEndId:%d:::\n", (int)W->NameTok->TextLength, W->NameTok->Text, W->EndVertex->Id);
+		dijkstra(Graph, W->StartVertex->Id);
+		printf("\n");
+	}
+
+	/*
+	graph *Graph = createGraph(9)
 	addEdge(Graph, 0, 1, 4);
 	addEdge(Graph, 0, 7, 8);
 	addEdge(Graph, 1, 2, 8);
@@ -137,8 +161,9 @@ main(int argc, char **args)
 	addEdge(Graph, 6, 7, 1);
 	addEdge(Graph, 6, 8, 6);
 	addEdge(Graph, 7, 8, 7);
+	*/
 
-	dijkstra(Graph, 0);
-	
+	//dijkstra(Graph, 0);
+
 	return 0;
 }

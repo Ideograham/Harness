@@ -27,3 +27,9 @@ FB2,Battery Fuse
 HV9,Battery Lead Junction
 RT2,Battery +
 RT3,Battery -
+SP1,Fused Power Alt
+SP2,Fused Power Rear
+SP3,Fused Power Relays
+SP4,Ground Rear
+SP5,Ground ECU
+

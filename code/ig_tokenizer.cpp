@@ -340,3 +340,15 @@ NumberTokenHexToInt(token number)
     Result = (int)strtol(number.Text, &number.Text + number.TextLength, 16);
     return(Result);   
 }
+
+void
+printTok(token *Tok)
+{
+    if (Tok)
+    {
+        printf("Type: %s\nTok: %.*s\n", 
+                token_strings[(int)Tok->Type], 
+                (int)Tok->TextLength, 
+                Tok->Text); 
+    }
+}
