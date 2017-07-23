@@ -119,6 +119,95 @@ dijkstra(graph *Graph, int src)
 	printArr(dist, path, v, src);	
 }
 
+
+void
+dijkstra(graph *Graph, gr *G, int src, int dst)
+{
+	int v = Graph->vertexCount;
+	int *dist = (int*)malloc(v * sizeof(int));
+	int *path = (int*)malloc(v * sizeof(int));
+
+	minHeap *Heap = createMinHeap(v);
+
+	for(int n=0; n<v; ++n)
+	{
+		dist[n] = INT_MAX;
+		path[n] = -1;
+		Heap->array[n] = newMinHeapNode(n, dist[n]);
+		Heap->pos[n] = n;
+	}
+
+	Heap->array[src] = newMinHeapNode(src, dist[src]);
+	Heap->pos[src] = src;
+	dist[src] = 0;
+	decreaseKey(Heap, src, dist[src]);
+	path[src] = src;
+
+	Heap->size = v;
+	while (!isEmpty(Heap))
+	{
+		minHeapNode *Min = extractMin(Heap);
+		int u = Min->v;
+
+		adjListNode *Crawl = Graph->array[u].head;
+
+		while(Crawl != NULL)
+		{
+			int vertex = Crawl->dest;
+
+			if (
+				isInMinHeap(Heap, vertex) && 
+				dist[u] != INT_MAX &&
+				Crawl->weight + dist[u] < dist[vertex])
+			{
+				dist[vertex] = dist[u] + Crawl->weight;
+				//printf("The shortest path to %d now goes through %d\n", vertex, u);
+				path[vertex] = u;
+				decreaseKey(Heap, vertex, dist[vertex]);
+			}
+			Crawl = Crawl->next;
+		}
+		if (u == dst)
+		{
+			//printf("Found shortest path from %d to %d as %d\n", src, dst, dist[u]);
+			printf("Found shortest path from %.*s to %.*s as %d\n",
+				(int)G->Verticies[src]->NameTok->TextLength, G->Verticies[src]->NameTok->Text,
+				(int)G->Verticies[dst]->NameTok->TextLength, G->Verticies[dst]->NameTok->Text,
+				dist[dst]);
+
+			int *stack = (int*)malloc(v * sizeof(int));
+			int sp = 0;
+			stack[sp++] = u;
+
+			printf("Path: ");
+			while (u < v )
+			{
+				stack[sp++] = path[u];
+				u = path[u];
+				if (u == src)
+					break;
+			}
+			while(sp > 0)
+			{
+				//printf("%d ", stack[--sp]);
+				int vId = stack[--sp];
+				vertex *vtx = G->Verticies[vId];
+				printf("%.*s ", (int)vtx->NameTok->TextLength, vtx->NameTok->Text);
+			}
+			free(stack);
+
+			break;
+		}
+	}
+	//printArr(dist, path, v, src);	
+}
+
+
+
+
+
+
+
 int
 main(int argc, char **args)
 {
@@ -140,9 +229,18 @@ main(int argc, char **args)
 	for (int i=0; i<G->WireCount; ++i)
 	{
 		wire *W = G->Wires[i];
-		printf("WIRE %.*s:\t\tEndId:%d:::\n", (int)W->NameTok->TextLength, W->NameTok->Text, W->EndVertex->Id);
-		dijkstra(Graph, W->StartVertex->Id);
-		printf("\n");
+		printf("WIRE NUMBER: %.*s - %.*s ::", 
+			(int)W->WireNumberTok->TextLength, W->WireNumberTok->Text,
+			(int)W->NameTok->TextLength, W->NameTok->Text);
+		printf("\t%.*s:%.*s ===> %.*s:%.*s\n",
+			(int)W->StartVertex->NameTok->TextLength, W->StartVertex->NameTok->Text,
+			(int)W->StartCavity->TextLength, W->StartCavity->Text,
+			(int)W->EndVertex->NameTok->TextLength, W->EndVertex->NameTok->Text,
+			(int)W->EndCavity->TextLength, W->EndCavity->Text);
+		
+		//dijkstra(Graph, W->StartVertex->Id);
+		dijkstra(Graph, G, W->StartVertex->Id, W->EndVertex->Id);
+		printf("\n\n");
 	}
 
 	/*

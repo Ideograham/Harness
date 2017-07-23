@@ -4,6 +4,86 @@
 		"selected_items":
 		[
 			[
+				"EndCav",
+				"EndCavity"
+			],
+			[
+				"Wire",
+				"WireCapacity"
+			],
+			[
+				"Desc",
+				"DescriptionTok"
+			],
+			[
+				"Line",
+				"LineNumber"
+			],
+			[
+				"Edg",
+				"EdgeCount"
+			],
+			[
+				"Notes",
+				"NotesTok"
+			],
+			[
+				"Note",
+				"NotesTok"
+			],
+			[
+				"Text",
+				"TextLength"
+			],
+			[
+				"Vert",
+				"Verticies"
+			],
+			[
+				"Ver",
+				"Verticies"
+			],
+			[
+				"V",
+				"VertexCount"
+			],
+			[
+				"Edge",
+				"EdgeCapacity"
+			],
+			[
+				"Ed",
+				"EdgeCapacity"
+			],
+			[
+				"Name",
+				"NameTok"
+			],
+			[
+				"Des",
+				"DescriptionTok"
+			],
+			[
+				"Vertex",
+				"VertexCapacity"
+			],
+			[
+				"edg",
+				"edgeCSV"
+			],
+			[
+				"Token",
+				"Token_EndOfStream"
+			],
+			[
+				"Token_en",
+				"Token_EndOfStream"
+			],
+			[
+				"Fou",
+				"FoundField"
+			],
+			[
 				"verte",
 				"vertexCount"
 			],
@@ -119,6 +199,24 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/W/git/Harness/code/csv.cpp",
+			"settings":
+			{
+				"buffer_size": 12596,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/W/git/Harness/code/harness.cpp",
+			"settings":
+			{
+				"buffer_size": 3343,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "Packages/C++/C++ Single File.sublime-build",
 	"build_system_choices":
@@ -197,10 +295,17 @@
 	"expanded_folders":
 	[
 		"/Users/jack/dev/git/Harness",
-		"/Users/jack/dev/git/Harness/code"
+		"/W/git/Harness",
+		"/W/git/Harness/code"
 	],
 	"file_history":
 	[
+		"/W/git/build/Wires.csv",
+		"/W/git/Harness/code/harness.h",
+		"/W/git/Harness/code/ig_tokenizer.cpp",
+		"/W/git/Harness/code/minHeap.h",
+		"/C/dev/git/Harness/misc/Wires-Table 1.csv",
+		"/W/handmade/code/simple_preprocessor.cpp",
 		"/Users/jack/dev/git/Harness/code/csv.cpp",
 		"/Users/jack/dev/git/Harness/code/ig_tokenizer.cpp",
 		"/Users/jack/dev/git/Harness/code/ig_util.cpp",
@@ -322,17 +427,11 @@
 		"/C/dev/Sequoia/Sequoia/Content/sequoia.css",
 		"/C/dev/Sequoia/Sequoia/Content/reports.css",
 		"/C/dev/Sequoia/Sequoia/Views/Report/PartsOnOrderWO.cshtml",
-		"/C/dev/Sequoia/Sequoia/Views/PurchaseOrder/GetDrawingsRefactored.cshtml",
-		"/C/dev/Sequoia/Sequoia/Content/sequoia_report.css",
-		"/C/dev/Sequoia/Sequoia/Views/Shared/_Sequoia_Report.cshtml",
-		"/C/dev/Sequoia/Sequoia/Controllers/ReportController.cs",
-		"/C/dev/Sequoia/Sequoia/Models/AccountingSalesViewModel.cs",
-		"/C/dev/Sequoia/Sequoia/Views/Aggregate/WorkOrderPartsPull.cshtml",
-		"/C/dev/Sequoia/Sequoia/Views/Aggregate/WorkOrderPartsAggregate.cshtml"
+		"/C/dev/Sequoia/Sequoia/Views/PurchaseOrder/GetDrawingsRefactored.cshtml"
 	],
 	"find":
 	{
-		"height": 24.0
+		"height": 36.0
 	},
 	"find_in_files":
 	{
@@ -346,6 +445,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"StartCavity",
+			"NameTok",
+			"StartCavity",
+			"WireNumberTok",
+			"edge",
+			"NameTok",
+			"Edges",
+			"edge",
+			"Edges",
+			"\\t",
+			"Verticies",
+			"malloc",
+			"calloc",
 			"Token_EndOfStream",
 			"Token_EndOfLine",
 			"Token_Asterisk",
@@ -460,18 +572,16 @@
 			"CurrentStatusId",
 			"Filename",
 			"Path",
-			"Comment",
-			"FileDate",
-			"Date",
-			"LatestRevisionNo",
-			"LatestReleasedVersion"
+			"Comment"
 		],
 		"highlight": true,
-		"in_selection": false,
+		"in_selection": true,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
+			"wire",
+			",",
 			"Graph",
 			"Graph\n",
 			"addEdge(graph, 0, 1, 4);\n\taddEdge(graph, 0, 7, 8);\n\taddEdge(graph, 1, 2, 8);\n\taddEdge(graph, 1, 7, 11);\n\taddEdge(graph, 2, 3, 7);\n\taddEdge(graph, 2, 8, 2);\n\taddEdge(graph, 2, 5, 4);\n\taddEdge(graph, 3, 4, 9);\n\taddEdge(graph, 3, 5, 14);\n\taddEdge(graph, 4, 5, 10);\n\taddEdge(graph, 5, 6, 2);\n\taddEdge(graph, 6, 7, 1);\n\taddEdge(graph, 6, 8, 6);\n\taddEdge(graph, 7, 8, 7);\n\n\tdijkstra(graph, 0);\n",
@@ -515,13 +625,73 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/W/git/Harness/code/csv.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12596,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12590,
+								12590
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 9749.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		},
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 1,
+					"file": "/W/git/Harness/code/harness.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3343,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2314,
+								2314
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1944.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -579,7 +749,7 @@
 	"project": "harness.sublime-project",
 	"replace":
 	{
-		"height": 64.0
+		"height": 66.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -905,7 +1075,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 		"_vintageous_last_char_search_command": "vi_t",
