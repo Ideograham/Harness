@@ -52,7 +52,6 @@ printPath(int path[], int n, int src, int v)
 	free(stack);
 }
 
-
 void
 printArr(int dist[], int path[], int n, int src)
 {
@@ -117,12 +116,30 @@ dijkstra(graph *Graph, int src)
 		}
 	}
 	printArr(dist, path, v, src);	
+	/*
+	graph *Graph = createGraph(9)
+	addEdge(Graph, 0, 1, 4);
+	addEdge(Graph, 0, 7, 8);
+	addEdge(Graph, 1, 2, 8);
+	addEdge(Graph, 1, 7, 11);
+	addEdge(Graph, 2, 3, 7);
+	addEdge(Graph, 2, 8, 2);
+	addEdge(Graph, 2, 5, 4);
+	addEdge(Graph, 3, 4, 9);
+	addEdge(Graph, 3, 5, 14);
+	addEdge(Graph, 4, 5, 10);
+	addEdge(Graph, 5, 6, 2);
+	addEdge(Graph, 6, 7, 1);
+	addEdge(Graph, 6, 8, 6);
+	addEdge(Graph, 7, 8, 7);
+	*/
+	//dijkstra(Graph, 0);
 }
 
-
-void
+connection*
 dijkstra(graph *Graph, gr *G, int src, int dst)
 {
+	connection *C = NULL;
 	int v = Graph->vertexCount;
 	int *dist = (int*)malloc(v * sizeof(int));
 	int *path = (int*)malloc(v * sizeof(int));
@@ -169,17 +186,16 @@ dijkstra(graph *Graph, gr *G, int src, int dst)
 		}
 		if (u == dst)
 		{
-			//printf("Found shortest path from %d to %d as %d\n", src, dst, dist[u]);
-			printf("Found shortest path from %.*s to %.*s as %d\n",
-				(int)G->Verticies[src]->NameTok->TextLength, G->Verticies[src]->NameTok->Text,
-				(int)G->Verticies[dst]->NameTok->TextLength, G->Verticies[dst]->NameTok->Text,
-				dist[dst]);
-
+			// printf("Found shortest path from %.*s to %.*s as %d\n",
+			// 	(int)G->Verticies[src]->NameTok->TextLength, G->Verticies[src]->NameTok->Text,
+			// 	(int)G->Verticies[dst]->NameTok->TextLength, G->Verticies[dst]->NameTok->Text,
+			// 	dist[dst]);
+			
 			int *stack = (int*)malloc(v * sizeof(int));
 			int sp = 0;
 			stack[sp++] = u;
 
-			printf("Path: ");
+			//printf("Path: ");
 			while (u < v )
 			{
 				stack[sp++] = path[u];
@@ -187,26 +203,61 @@ dijkstra(graph *Graph, gr *G, int src, int dst)
 				if (u == src)
 					break;
 			}
+			if (!C)
+			{
+				C = (connection*)malloc(sizeof(connection));
+			}
+			C->Len = dist[dst];
+			C->PathSize = sp;
+			C->Path = (vertex**)malloc(C->PathSize * sizeof(vertex*));
+			int pos = 0;
 			while(sp > 0)
 			{
 				//printf("%d ", stack[--sp]);
 				int vId = stack[--sp];
 				vertex *vtx = G->Verticies[vId];
-				printf("%.*s ", (int)vtx->NameTok->TextLength, vtx->NameTok->Text);
+				C->Path[pos++] = vtx;
+				//printf("%.*s ", (int)vtx->NameTok->TextLength, vtx->NameTok->Text);
 			}
 			free(stack);
 
 			break;
 		}
 	}
-	//printArr(dist, path, v, src);	
+	//printArr(dist, path, v, src);
+	return C;
 }
 
-
-
-
-
-
+void
+printConnection(wire *W)
+{
+	if(W && W->Connection)
+	{
+		//printf("Len: %dmm\t Path: ", W->Connection->Len);
+		for(int i=0; i<W->Connection->PathSize; ++i)
+		{
+			vertex *V = W->Connection->Path[i];
+			if(i==0)
+			{
+				printf("[%.*s:%.*s] ", 
+				(int)V->NameTok->TextLength, V->NameTok->Text,
+				(int)W->StartCavity->TextLength, W->StartCavity->Text);
+				
+			}
+			else if(i == W->Connection->PathSize - 1)
+			{
+				printf("[%.*s:%.*s]", 
+					(int)V->NameTok->TextLength, V->NameTok->Text,
+					(int)W->EndCavity->TextLength, W->EndCavity->Text);
+			}
+			else
+			{
+				printf("[%.*s] ",
+					(int)V->NameTok->TextLength, V->NameTok->Text);
+			}
+		}
+	}
+}
 
 int
 main(int argc, char **args)
@@ -229,39 +280,75 @@ main(int argc, char **args)
 	for (int i=0; i<G->WireCount; ++i)
 	{
 		wire *W = G->Wires[i];
-		printf("WIRE NUMBER: %.*s - %.*s ::", 
+		printf("WIRE NUMBER: %.*s - %.*s", 
 			(int)W->WireNumberTok->TextLength, W->WireNumberTok->Text,
 			(int)W->NameTok->TextLength, W->NameTok->Text);
-		printf("\t%.*s:%.*s ===> %.*s:%.*s\n",
+		printf("\t[%.*s:%.*s => %.*s:%.*s]\n",
 			(int)W->StartVertex->NameTok->TextLength, W->StartVertex->NameTok->Text,
 			(int)W->StartCavity->TextLength, W->StartCavity->Text,
 			(int)W->EndVertex->NameTok->TextLength, W->EndVertex->NameTok->Text,
 			(int)W->EndCavity->TextLength, W->EndCavity->Text);
 		
 		//dijkstra(Graph, W->StartVertex->Id);
-		dijkstra(Graph, G, W->StartVertex->Id, W->EndVertex->Id);
+		W->Connection = dijkstra(Graph, G, W->StartVertex->Id, W->EndVertex->Id);
+		printConnection(W);
 		printf("\n\n");
 	}
 
-	/*
-	graph *Graph = createGraph(9)
-	addEdge(Graph, 0, 1, 4);
-	addEdge(Graph, 0, 7, 8);
-	addEdge(Graph, 1, 2, 8);
-	addEdge(Graph, 1, 7, 11);
-	addEdge(Graph, 2, 3, 7);
-	addEdge(Graph, 2, 8, 2);
-	addEdge(Graph, 2, 5, 4);
-	addEdge(Graph, 3, 4, 9);
-	addEdge(Graph, 3, 5, 14);
-	addEdge(Graph, 4, 5, 10);
-	addEdge(Graph, 5, 6, 2);
-	addEdge(Graph, 6, 7, 1);
-	addEdge(Graph, 6, 8, 6);
-	addEdge(Graph, 7, 8, 7);
-	*/
+	printf("Verticies------------------------------------------\n\n\n");
+	for(int v=0; v<G->VertexCount; ++v)
+	{
+		vertex *V = G->Verticies[v];
+		
+		printf("%.*s,,ConnectorMFG\n",
+			(int)V->NameTok->TextLength, V->NameTok->Text);
+		printf("%.*s,,ConnectorPN\n",
+			(int)V->DescriptionTok->TextLength, V->DescriptionTok->Text);
+		
+		printf("Pin,Sz,Color,Connection Target\n");
+		
+		for(int w=0; w<G->WireCount; ++w)
+		{
+			wire *W = G->Wires[w];
+			
+			if(W->StartVertex->Id == V->Id)
+			{
+				printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
+					(int)W->StartCavity->TextLength, W->StartCavity->Text,
+					W->Gauge,
+					(int)W->ColorTok->TextLength, W->ColorTok->Text,
+					(int)W->EndVertex->NameTok->TextLength, W->EndVertex->NameTok->Text,
+					(int)W->EndCavity->TextLength, W->EndCavity->Text);
+			}
+			
+			if(W->EndVertex->Id == V->Id)
+			{
+				printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
+					(int)W->EndCavity->TextLength, W->EndCavity->Text,
+					W->Gauge,
+					(int)W->ColorTok->TextLength, W->ColorTok->Text,
+					(int)W->StartVertex->NameTok->TextLength, W->StartVertex->NameTok->Text,
+					(int)W->StartCavity->TextLength, W->StartCavity->Text);
+			}
+		}
+		printf("------------------------------------------\n\n\n");
+	}
 
-	//dijkstra(Graph, 0);
+	printf("Wires----------------------------------------\n");
+	printf("Number,Name,Gauge(AWG),Type,Color,Length(mm),Path\n");
+	for(int w=0; w<G->WireCount; ++w)
+	{
+		wire *W = G->Wires[w];
+		printf("%.*s,%.*s,%d,%.*s,%.*s,%d,",
+			(int)W->WireNumberTok->TextLength, W->WireNumberTok->Text,
+			(int)W->NameTok->TextLength, W->NameTok->Text,
+			W->Gauge,
+			(int)W->TypeTok->TextLength, W->TypeTok->Text,
+			(int)W->ColorTok->TextLength, W->ColorTok->Text,
+			W->Connection->Len);
+		printConnection(W);
+		printf("\n");
 
+	}
 	return 0;
 }

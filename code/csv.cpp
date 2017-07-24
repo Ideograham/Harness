@@ -27,6 +27,13 @@ struct vertex
 	token *DescriptionTok;
 };
 
+struct connection
+{
+	int Len;
+	int PathSize;
+	vertex **Path;
+};
+
 struct edge
 {
 	int Id;
@@ -42,10 +49,14 @@ struct wire
 	int Id;
 	token *WireNumberTok;
 	token *NameTok;
+	int Gauge;
+	token *TypeTok;
+	token *ColorTok;
 	vertex *StartVertex;
 	token *StartCavity;
 	vertex *EndVertex;
 	token *EndCavity;
+	connection *Connection;
 };
 
 struct gr
@@ -67,6 +78,8 @@ allocateWire()
 	wire *W = (wire*)calloc(1, sizeof(wire));
 	W->WireNumberTok = (token*)calloc(1, sizeof(token));
 	W->NameTok = (token*)calloc(1, sizeof(token));
+	W->TypeTok = (token*)calloc(1, sizeof(token));
+	W->ColorTok = (token*)calloc(1, sizeof(token));
 	W->StartCavity = (token*)calloc(1, sizeof(token));
 	W->EndCavity = (token*)calloc(1, sizeof(token));
 	W->StartVertex = (vertex*)calloc(1, sizeof(vertex));
@@ -376,6 +389,32 @@ processCSVWires(gr *Graph, char *wireCSVPath)
 
 					case 2:
 						{	
+							//Gauge
+							if (PrevTok->Type == Token_Number)
+							{
+								W->Gauge = NumberTokenToInt(*PrevTok);
+							}
+							*PrevTok = GetToken(T);	
+						}break;
+
+					case 3:
+						{	
+							//Type
+							W->TypeTok->Text = LastComma;
+							W->TypeTok->TextLength = Tok->Text - LastComma;
+							*PrevTok = GetToken(T);	
+						}break;
+
+					case 4:
+						{	
+							//Color
+							W->ColorTok->Text = LastComma;
+							W->ColorTok->TextLength = Tok->Text - LastComma;
+							*PrevTok = GetToken(T);	
+						}break;
+
+					case 5:
+						{	
 							//Start Vertex
 							W->StartVertex = matchVertexInGraph(Graph, PrevTok);
 							if (!W->StartVertex)
@@ -383,7 +422,7 @@ processCSVWires(gr *Graph, char *wireCSVPath)
 							*PrevTok = GetToken(T);		
 						}break;
 					
-					case 3:
+					case 6:
 						{	
 							//start cavity
 							W->StartCavity->Text = LastComma;
@@ -391,7 +430,7 @@ processCSVWires(gr *Graph, char *wireCSVPath)
 							*PrevTok = GetToken(T);	
 						}break;
 
-					case 4:	
+					case 7:	
 						{	
 							//end verted
 							W->EndVertex = matchVertexInGraph(Graph, PrevTok);
@@ -400,7 +439,7 @@ processCSVWires(gr *Graph, char *wireCSVPath)
 							*PrevTok = GetToken(T);	
 						}break;
 					
-					case 5:
+					case 8:
 						{	
 							//End cavity - handle in end of line
 							W->EndCavity->Text = LastComma;
@@ -424,7 +463,7 @@ processCSVWires(gr *Graph, char *wireCSVPath)
 				//printf("Found %d fields on line %d\n", FoundField+1, LineNumber);
 
 				//Store out wire
-				if (FoundField == 5)
+				if (FoundField == 8)
 				{
 					W->Id = Graph->WireCount;
 					W->EndCavity->Text = LastComma;
