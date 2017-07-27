@@ -1,4 +1,3 @@
-Name,Description
 P1,ECU1
 P2,ECU2
 P22,Diagnostic Stub
@@ -10,7 +9,7 @@ P4,Barometric Pressure Sensor
 FB1,Switched Power Fuse Box
 P23,Fuel Cut Relay Connector
 P3,Customer Interface
-P8,Oil Pressure
+PT1,Oil Pressure
 HV5,Fuel System Junction
 HV6,Alternator Junction
 HV7,Relay Junction
@@ -27,6 +26,8 @@ FB2,Battery Fuse
 HV9,Battery Lead Junction
 RT2,Battery +
 RT3,Battery -
+RT4,Glow Plug +
+PT2,Starter Solenoid
 SP1,Fused Power Alt
 SP2,Fused Power Rear
 SP3,Fused Power Relays

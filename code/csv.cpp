@@ -106,7 +106,6 @@ processCSVVerticies(gr *Graph, char *VertCSVPath)
 		//printTok(LineTok);
 		
 		//process verticies	
-		b32 FoundHeading = FALSE;
 		b32 FoundSep = FALSE;
 		char *SepPos = NULL;
 
@@ -130,14 +129,6 @@ processCSVVerticies(gr *Graph, char *VertCSVPath)
 			if (Tok->Type == Token_EndOfLine)
 			{
 				{
-					if(!FoundHeading)
-					{
-						//no validation - should add
-						FoundHeading = TRUE;
-						FoundSep = FALSE;
-						SepPos = NULL;				
-						*LineTok = GetToken(T);		//start next cycle
-					}
 					if(FoundSep)
 					{
 						//Allocate New Vertex

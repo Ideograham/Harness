@@ -296,42 +296,90 @@ main(int argc, char **args)
 	}
 
 	printf("Verticies------------------------------------------\n\n\n");
+
 	for(int v=0; v<G->VertexCount; ++v)
 	{
 		vertex *V = G->Verticies[v];
 		
-		printf("%.*s,,ConnectorMFG\n",
+		if ((V->NameTok->TextLength >= 2) &&
+				(V->NameTok->Text[0] == 'H') &&
+				(V->NameTok->Text[1] == 'V'))
+		{
+			continue; 	//don't output for Harness Verticies.
+		}
+
+		else if ((V->NameTok->TextLength >= 2) &&
+				(V->NameTok->Text[0] == 'S') &&
+				(V->NameTok->Text[1] == 'P'))
+		{
+			printf("%.*s,,,Ultrasonic\n",
 			(int)V->NameTok->TextLength, V->NameTok->Text);
-		printf("%.*s,,ConnectorPN\n",
+			printf("%.*s,,,Weld Splice\n",
 			(int)V->DescriptionTok->TextLength, V->DescriptionTok->Text);
 		
-		printf("Pin,Sz,Color,Connection Target\n");
-		
-		for(int w=0; w<G->WireCount; ++w)
-		{
-			wire *W = G->Wires[w];
+			printf("Wire,Sz,Color,Target\n");
 			
-			if(W->StartVertex->Id == V->Id)
+			for(int w=0; w<G->WireCount; ++w)
 			{
-				printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
-					(int)W->StartCavity->TextLength, W->StartCavity->Text,
-					W->Gauge,
-					(int)W->ColorTok->TextLength, W->ColorTok->Text,
-					(int)W->EndVertex->NameTok->TextLength, W->EndVertex->NameTok->Text,
-					(int)W->EndCavity->TextLength, W->EndCavity->Text);
+				wire *W = G->Wires[w];
+				
+				if(W->StartVertex->Id == V->Id)
+				{
+					printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
+						(int)W->WireNumberTok->TextLength, W->WireNumberTok->Text,
+						W->Gauge,
+						(int)W->ColorTok->TextLength, W->ColorTok->Text,
+						(int)W->EndVertex->NameTok->TextLength, W->EndVertex->NameTok->Text,
+						(int)W->EndCavity->TextLength, W->EndCavity->Text);
+				}
+				
+				if(W->EndVertex->Id == V->Id)
+				{
+					printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
+						(int)W->WireNumberTok->TextLength, W->WireNumberTok->Text,
+						W->Gauge,
+						(int)W->ColorTok->TextLength, W->ColorTok->Text,
+						(int)W->StartVertex->NameTok->TextLength, W->StartVertex->NameTok->Text,
+						(int)W->StartCavity->TextLength, W->StartCavity->Text);
+				}
 			}
-			
-			if(W->EndVertex->Id == V->Id)
-			{
-				printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
-					(int)W->EndCavity->TextLength, W->EndCavity->Text,
-					W->Gauge,
-					(int)W->ColorTok->TextLength, W->ColorTok->Text,
-					(int)W->StartVertex->NameTok->TextLength, W->StartVertex->NameTok->Text,
-					(int)W->StartCavity->TextLength, W->StartCavity->Text);
-			}
+			printf("\n\n\n");	
 		}
-		printf("------------------------------------------\n\n\n");
+		else
+		{
+			printf("%.*s,,,ConnectorMFG\n",
+				(int)V->NameTok->TextLength, V->NameTok->Text);
+			printf("%.*s,,,ConnectorPN\n",
+				(int)V->DescriptionTok->TextLength, V->DescriptionTok->Text);
+			
+			printf("Pin,Sz,Color,Connection Target\n");
+			
+			for(int w=0; w<G->WireCount; ++w)
+			{
+				wire *W = G->Wires[w];
+				
+				if(W->StartVertex->Id == V->Id)
+				{
+					printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
+						(int)W->StartCavity->TextLength, W->StartCavity->Text,
+						W->Gauge,
+						(int)W->ColorTok->TextLength, W->ColorTok->Text,
+						(int)W->EndVertex->NameTok->TextLength, W->EndVertex->NameTok->Text,
+						(int)W->EndCavity->TextLength, W->EndCavity->Text);
+				}
+				
+				if(W->EndVertex->Id == V->Id)
+				{
+					printf("%.*s,%d AWG,%.*s,%.*s:%.*s\n",
+						(int)W->EndCavity->TextLength, W->EndCavity->Text,
+						W->Gauge,
+						(int)W->ColorTok->TextLength, W->ColorTok->Text,
+						(int)W->StartVertex->NameTok->TextLength, W->StartVertex->NameTok->Text,
+						(int)W->StartCavity->TextLength, W->StartCavity->Text);
+				}
+			}
+			printf("\n\n\n");	
+		}
 	}
 
 	printf("Wires----------------------------------------\n");
